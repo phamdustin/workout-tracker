@@ -90,12 +90,6 @@ export default function ExerciseCard({
 
             {/* Weight Input */}
             <View style={styles.inputContainer}>
-              <TouchableOpacity
-                style={styles.adjustButton}
-                onPress={() => updateSet(setIndex, 'actualWeight', Math.max(0, set.actualWeight - 5))}
-              >
-                <Minus size={16} color="#64748B" />
-              </TouchableOpacity> 
               
               <TextInput
                 style={styles.input}
@@ -105,22 +99,12 @@ export default function ExerciseCard({
                 textAlign="center"
               />
               
-              <TouchableOpacity
-                style={styles.adjustButton}
-                onPress={() => updateSet(setIndex, 'actualWeight', set.actualWeight + 5)}
-              >
-                <Plus size={16} color="#64748B" />
-              </TouchableOpacity>
+
             </View>
 
             {/* Reps Input */}
             <View style={styles.inputContainer}>
-              <TouchableOpacity
-                style={styles.adjustButton}
-                onPress={() => updateSet(setIndex, 'actualReps', Math.max(0, set.actualReps - 1))}
-              >
-                <Minus size={16} color="#64748B" />
-              </TouchableOpacity>
+
               
               <TextInput
                 style={styles.input}
@@ -130,12 +114,7 @@ export default function ExerciseCard({
                 textAlign="center"
               />
               
-              <TouchableOpacity
-                style={styles.adjustButton}
-                onPress={() => updateSet(setIndex, 'actualReps', set.actualReps + 1)}
-              >
-                <Plus size={16} color="#64748B" />
-              </TouchableOpacity>
+
             </View>
 
             {/* Complete Set Button */}
@@ -294,8 +273,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1E293B',
     marginHorizontal: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   completeSetButton: {
     width: 24,
