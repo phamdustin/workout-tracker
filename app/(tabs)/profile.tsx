@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -18,8 +18,20 @@ import {
 import { getUserStats } from '@/utils/workoutData';
 import { UserStats } from '@/types/workout';
 
+import { UserContext } from '@/context/UserContext';
+import { supabase } from '@/utils/supabase';
+
 export default function ProfileScreen() {
   const [userStats, setUserStats] = useState<UserStats | null>(null);
+
+  const { user } = useContext(UserContext) 
+  
+/*   if (!user){
+
+    return (
+      <Text>Loading...</Text>
+    )
+  }  */
 
   useEffect(() => {
     setUserStats(getUserStats());

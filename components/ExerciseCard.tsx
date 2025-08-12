@@ -75,6 +75,7 @@ export default function ExerciseCard({
         <View style={styles.setsHeader}>
           <Text style={styles.setHeaderText}>Set</Text>
           <Text style={styles.setHeaderText}>Previous</Text>
+          <Text style={styles.setHeaderText}>Rep Range</Text>
           <Text style={styles.setHeaderText}>Weight (lbs)</Text>
           <Text style={styles.setHeaderText}>Reps</Text>
           <Text style={styles.setHeaderText}>✓</Text>
@@ -86,6 +87,11 @@ export default function ExerciseCard({
             
             <Text style={styles.previousText}>
               {set.targetWeight} × {set.targetReps}
+            </Text>
+
+            {/* Needs to be fixed to have accurate rep ranges for each individual exercise */}
+            <Text style={styles.previousText}>
+              8-12
             </Text>
 
             {/* Weight Input */}

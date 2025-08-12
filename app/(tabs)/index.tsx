@@ -12,15 +12,34 @@ import ExerciseCard from '@/components/ExerciseCard';
 import WorkoutHeader from '@/components/WorkoutHeader';
 import { getTodaysWorkout, completeWorkout } from '@/utils/workoutData';
 import { Exercise, WorkoutSession } from '@/types/workout';
+import { supabase } from '@/utils/supabase'
 
 export default function WorkoutScreen() {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutSession | null>(null);
   const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
+  const [user, setUsers] = useState([]);
 
   useEffect(() => {
     const workout = getTodaysWorkout();
     setCurrentWorkout(workout);
+
+    async function fetchData() {
+        let {data, error} = await supabase
+          .from('testing_table')
+          .select('*')
+      if (error) {
+        console.error(error)
+      } else if (data) {
+        setUsers(data)
+        console.log(data)
+      }
+
+      }
+
+    fetchData();
+    
   }, []);
+
 
   const handleExerciseComplete = (exerciseId: string) => {
     setCompletedExercises(prev => new Set([...prev, exerciseId]));
