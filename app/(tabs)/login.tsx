@@ -1,9 +1,14 @@
 /* tester accounts in .env
+  testing123@gmail.com 1234
+  tyrion@gmail.com monkey1
  */
 
 import { supabase } from '@/utils/supabase'
-import { View, Text, TextInput, StyleSheet, Button, Pressable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 export default function login() {
 
@@ -27,16 +32,40 @@ export default function login() {
     const [password, setPassword] = useState("")
 
     function onPressFunction () {
-      console.log("pressed!")
+      // Pass the email and password values along to the supabase
+      console.log("Login processing!")
+      signIn(email, password)
+      setEmail("")
+      setPassword("")
+    }
+
+    const emailChange = (event) => {
+      setEmail(event.target.value)
+    }
+    const passwordChange = (event) => {
+      setPassword(event.target.value)
     }
     return(
-      <View>
-        <TextInput style={styles.inputTextContainer} value={email} onChangeText={setEmail} placeholder="email@gmail.com"/>
-        <TextInput style={styles.inputTextContainer} value={password} onChangeText={setPassword} placeholder="password"/>
-        <Pressable onPress={onPressFunction} >
-          <Text>Login</Text>
-        </Pressable>
-      </View>
+      <SafeAreaView>
+        <View>
+          <Form>
+            <Form.Group className= "mb-3">
+              <Form.Label className="form-label">Email address</Form.Label>
+              <Form.Control className="form-control" onChange={emailChange} style={styles.inputTextContainer} value={email} placeholder="email@gmail.com"/>
+              <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+            </Form.Group>
+            <Form.Group className= "mb-3">
+              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Control className="form-control" onChange={passwordChange} style={styles.inputTextContainer} value={password} placeholder="password"/>
+            </Form.Group>
+            <div style={styles.button}>
+              <Button variant="primary" type="submit" >
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </View>
+      </SafeAreaView>
     )
   }
 
@@ -53,8 +82,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
-
+    margin: 1,
+  },
+  button: {
+    display: 'flex', 
+    justifyContent: 'flex-end',
+    fontSize: 15,
+    marginRight: 20,
   }
 })
 

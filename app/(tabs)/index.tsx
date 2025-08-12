@@ -13,6 +13,7 @@ import WorkoutHeader from '@/components/WorkoutHeader';
 import { getTodaysWorkout, completeWorkout } from '@/utils/workoutData';
 import { Exercise, WorkoutSession } from '@/types/workout';
 import { supabase } from '@/utils/supabase'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function WorkoutScreen() {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutSession | null>(null);
