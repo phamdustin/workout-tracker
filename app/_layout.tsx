@@ -4,16 +4,29 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { UserProvider } from '@/context/UserContext'
+import { useAuth } from '@/context/UserContext';
+import  Login  from '@/components/login'
 
+function AuthGate() {
+  const { user } = useAuth()
+
+  if (!user) {
+    return <Login />
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  )
+}
 export default function RootLayout() {
   useFrameworkReady();
 
   return (
     <>
       <UserProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <AuthGate />
         <StatusBar style="auto" />
       </UserProvider>
     </>

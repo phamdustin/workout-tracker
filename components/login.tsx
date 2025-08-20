@@ -3,16 +3,15 @@
   tyrion@gmail.com monkey1
  */
 
-import { supabase } from '@/utils/supabase'
-import { View, StyleSheet, Pressable } from 'react-native'
-import { useState, useEffect } from 'react'
+import { View, StyleSheet} from 'react-native'
+import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 import { useAuth } from '@/context/UserContext'
 
-export default function login() {
+export default function Login() {
 
   const {user, setUser} = useAuth()
   const {token, setToken} = useAuth()
@@ -46,10 +45,10 @@ export default function login() {
       setPassword("")
     }
 
-    const emailChange = (event) => {
+    const emailChange = (event: any) => {
       setEmail(event.target.value)
     }
-    const passwordChange = (event) => {
+    const passwordChange = (event: any) => {
       setPassword(event.target.value)
     }
 
