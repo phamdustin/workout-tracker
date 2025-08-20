@@ -4,15 +4,20 @@
  */
 
 import { supabase } from '@/utils/supabase'
-import { View, StyleSheet } from 'react-native'
-import { useState } from 'react'
+import { View, StyleSheet, Pressable } from 'react-native'
+import { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+import { useAuth } from '@/context/UserContext'
+
 export default function login() {
 
-  async function signIn(email: string, password: string) {
+  const {user, setUser} = useAuth()
+  const {token, setToken} = useAuth()
+
+/*   async function signIn(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -24,17 +29,19 @@ export default function login() {
     }
 
     console.log('User logged in:', data.user)
+    setLoggedIn(!loggedIn)
     return { success: true, user: data.user}
-  }
+  } */
 
   function LoginForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    function onPressFunction () {
+    const auth = useAuth()
+    const onPressFunction = async () =>{
       // Pass the email and password values along to the supabase
       console.log("Login processing!")
-      signIn(email, password)
+      const result = await auth.loginAction(email, password)
       setEmail("")
       setPassword("")
     }
@@ -45,7 +52,10 @@ export default function login() {
     const passwordChange = (event) => {
       setPassword(event.target.value)
     }
+
+
     return(
+      
       <SafeAreaView>
         <View>
           <Form>
@@ -58,22 +68,34 @@ export default function login() {
               <Form.Label className="form-label">Password</Form.Label>
               <Form.Control className="form-control" onChange={passwordChange} style={styles.inputTextContainer} value={password} placeholder="password"/>
             </Form.Group>
-            <div style={styles.button}>
-              <Button variant="primary" type="submit" >
+            <div>
+              <Button variant="primary" type="button" onClick={onPressFunction}>
                 Submit
               </Button>
             </div>
           </Form>
+
         </View>
       </SafeAreaView>
     )
   }
 
-  return (
-    <View>
-      <LoginForm></LoginForm>
-    </View> 
-  )
+  if (!user) {
+    return (
+      <View>
+        <LoginForm></LoginForm>
+      </View> 
+    )
+  } else {
+    return (
+      <View>
+        <div>
+          <p>Logged in with {user.email}</p>
+        </div>
+      </View>
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({

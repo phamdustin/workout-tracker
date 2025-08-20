@@ -26,17 +26,19 @@ export default function ProfileScreen() {
 
   const { user } = useContext(UserContext) 
   
-/*   if (!user){
 
-    return (
-      <Text>Loading...</Text>
-    )
-  }  */
 
   useEffect(() => {
     setUserStats(getUserStats());
   }, []);
 
+  if (!user){
+
+    return (
+      <Text>Loading...</Text>
+    )
+  }  
+  
   if (!userStats) {
     return (
       <SafeAreaView style={styles.container}>

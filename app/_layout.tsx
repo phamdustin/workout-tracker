@@ -1,3 +1,5 @@
+// The root component, or App.tsx file in other React projects
+
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
