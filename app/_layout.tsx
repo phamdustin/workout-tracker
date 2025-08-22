@@ -12,11 +12,11 @@ function AuthGate() {
 
   if (!user) {
     return <Login />
-  }
+  } 
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="(tabs)"/>
     </Stack>
   )
 }
