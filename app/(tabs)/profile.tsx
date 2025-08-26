@@ -24,22 +24,23 @@ import { supabase } from '@/utils/supabase';
 export default function ProfileScreen() {
   const [userStats, setUserStats] = useState<UserStats | null>(null);
 
-  const { user } = useContext(UserContext) 
+  const { userInfo } = useContext(UserContext) 
   
 
-
+  
   useEffect(() => {
     setUserStats(getUserStats());
+    console.log(userInfo)
   }, []);
 
-  if (!user){
-
+  if (!userInfo){
     return (
       <Text>Loading...</Text>
     )
   }  
   
   if (!userStats) {
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
@@ -49,6 +50,7 @@ export default function ProfileScreen() {
     );
   }
 
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -57,7 +59,7 @@ export default function ProfileScreen() {
           <View style={styles.avatarContainer}>
             <User size={48} color="#2563EB" />
           </View>
-          <Text style={styles.userName}>{userStats.name}</Text>
+          <Text style={styles.userName}>{userInfo.name}</Text>
           <Text style={styles.userSubtitle}>Fitness Enthusiast</Text>
         </View>
 

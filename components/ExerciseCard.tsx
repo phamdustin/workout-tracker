@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Plus, Minus, Check } from 'lucide-react-native';
 import { Exercise } from '@/types/workout';
+import { addSet } from '@/utils/workoutService'
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -16,12 +17,29 @@ interface ExerciseCardProps {
   onComplete: () => void;
 }
 
+/* 
+  Takes in 4 inputs
+    exercise -> exercise from routine includes 
+      id
+      name
+      musclegroup
+      sets : [{target weight, target reps}]
+      notes
+      rest time
+    exerciseNumber -> numerical order of workout on routine
+    isCompleted -> True/False if it is completed
+
+    onComplete is a void function that tells the parent
+    component when something is completed and to do smth
+*/
 export default function ExerciseCard({ 
   exercise, 
   exerciseNumber, 
   isCompleted, 
   onComplete 
 }: ExerciseCardProps) {
+
+  // takes information from the workout data and sets this up
   const [sets, setSets] = useState(
     exercise.sets.map(set => ({
       ...set,
@@ -31,24 +49,34 @@ export default function ExerciseCard({
     }))
   );
 
+  // updates individual sets' weight or reps
   const updateSet = (setIndex: number, field: 'actualWeight' | 'actualReps', value: number) => {
     setSets(prev => prev.map((set, index) => 
       index === setIndex ? { ...set, [field]: value } : set
     ));
   };
 
+  // updates individual set to True/False
   const toggleSetComplete = (setIndex: number) => {
     setSets(prev => prev.map((set, index) => 
-      index === setIndex ? { ...set, completed: !set.completed } : set
+      index === setIndex ? 
+      { ...set, completed: !set.completed } : set
     ));
+    // make a POST to the database to update the information
+    const newSet = sets[setIndex]
+    // using 1 as a tester for now
+    addSet(1, setIndex, newSet.actualReps, newSet.actualWeight)
+     
   };
 
   const allSetsCompleted = sets.every(set => set.completed);
+
 
   const handleExerciseComplete = () => {
     if (allSetsCompleted) {
       onComplete();
     }
+
   };
 
   return (

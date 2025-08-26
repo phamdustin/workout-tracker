@@ -27,16 +27,15 @@ export default function WorkoutScreen() {
     setCurrentWorkout(workout);
 
     async function fetchData() {
-        let {data, error} = await supabase
-          .from('testing_table')
-          .select('*')
+      let {data, error} = await supabase
+        .from('testing_table')
+        .select('*')
       if (error) {
         console.error(error)
       } else if (data) {
         setUsers(data)
         console.log(data)
       }
-
       }
 
     fetchData();
@@ -46,6 +45,7 @@ export default function WorkoutScreen() {
 
   const handleExerciseComplete = (exerciseId: string) => {
     setCompletedExercises(prev => new Set([...prev, exerciseId]));
+    console.log(`Current Exercise list ${[...completedExercises]}`);
   };
 
   const handleCompleteWorkout = () => {
@@ -54,6 +54,8 @@ export default function WorkoutScreen() {
       // Reset for next workout
       setCompletedExercises(new Set());
     }
+    completeWorkout("testing workout");
+    
   };
 
   const isWorkoutComplete = currentWorkout?.exercises.every(exercise => 

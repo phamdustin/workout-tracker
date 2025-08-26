@@ -6,6 +6,7 @@ import {
   UserStats 
 } from '@/types/workout';
 
+
 // Sample workout data - in a real app, this would come from a database
 export const getTodaysWorkout = (): WorkoutSession | null => {
   const today = new Date().getDay();
