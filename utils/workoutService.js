@@ -17,3 +17,19 @@ export async function addSet(workoutId, set_number, reps, weight) {
     }
     return data[0]
 }
+
+// Pull all rows from a workout session
+export async function pullWorkout(userId) {
+    const { data, error } = await supabase
+        .from('sessions')
+        .select('*')
+        .eq('user_id', userId)
+
+    if (error) {
+        console.error('Error fetching workouts:', error)
+        return []
+    }
+    console.log('pullworkout function data: ', data)
+    return data
+}
+

@@ -69,3 +69,9 @@ export interface UserStats {
     description: string;
   }[];
 }
+
+export interface WorkoutHistorySupa {
+  id: number;
+  exercise_name: string;
+  date: Date;
+}

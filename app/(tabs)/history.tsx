@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,38 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, TrendingUp, Filter } from 'lucide-react-native';
 import { getWorkoutHistory, getPersonalRecords } from '@/utils/workoutData';
-import { WorkoutHistory, PersonalRecord } from '@/types/workout';
+import { WorkoutHistory, PersonalRecord, WorkoutHistorySupa} from '@/types/workout';
 
+import { pullWorkout } from '@/utils/workoutService'
+
+import { UserContext } from '@/context/UserContext';
 export default function HistoryScreen() {
   const [history, setHistory] = useState<WorkoutHistory[]>([]);
+  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistorySupa[]>([]);
   const [personalRecords, setPersonalRecords] = useState<PersonalRecord[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'week' | 'month'>('all');
+
+  const { userInfo } = useContext(UserContext)
 
   useEffect(() => {
     setHistory(getWorkoutHistory());
     setPersonalRecords(getPersonalRecords());
-  }, []);
+
+    if (!userInfo) return
+
+    async function fetchData() {
+      console.log(userInfo)
+      const  data  = await pullWorkout(userInfo.user_id)
+      console.log(data)
+      setWorkoutHistory(data)
+    }
+    fetchData()
+  }, [userInfo]);
+
+  // Not needed, but just used to log
+  useEffect(() => {
+    console.log("workoutHistory changed", workoutHistory)
+  }, [workoutHistory])
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', { 
@@ -45,6 +66,10 @@ export default function HistoryScreen() {
     }
   });
 
+  if (!userInfo) {
+    return <Text>Loading...</Text>
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -80,8 +105,8 @@ export default function HistoryScreen() {
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Personal Records Section */}
-        <View style={styles.section}>
+        {/* Personal Records Section  */}
+        {/* <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <TrendingUp size={20} color="#2563EB" />
             <Text style={styles.sectionTitle}>Personal Records</Text>
@@ -102,8 +127,8 @@ export default function HistoryScreen() {
                 </Text>
               </View>
             ))}
-          </ScrollView>
-        </View>
+          </ScrollView> 
+        </View> */}
 
         {/* Workout History Section */}
         <View style={styles.section}>
@@ -112,33 +137,35 @@ export default function HistoryScreen() {
             <Text style={styles.sectionTitle}>Recent Workouts</Text>
           </View>
           
-          {filteredHistory.map((workout) => (
+          {/* {filteredHistory.map((workoutHistory) => ( */}
+          {workoutHistory.map((workout) => (
             <TouchableOpacity key={workout.id} style={styles.historyCard}>
               <View style={styles.historyHeader}>
                 <View>
                   <Text style={styles.historyTitle}>{workout.name}</Text>
                   <Text style={styles.historyDate}>
-                    {formatDate(workout.date)}
+                    {workout.date}
+                    {/* {formatDate(workout.date)} */}
                   </Text>
                 </View>
                 <View style={styles.completionBadge}>
                   <Text style={styles.completionText}>
-                    {Math.round((workout.exercisesCompleted / workout.totalExercises) * 100)}%
+                    {Math.round((workout.actual_number_of_exercises / workout.expected_number_of_exercises) * 100)}%  
                   </Text>
                 </View>
               </View>
               
               <View style={styles.historyStats}>
                 <View style={styles.statItem}>
-                  <Text style={styles.statValue}>{workout.exercisesCompleted}</Text>
+                  <Text style={styles.statValue}>{workout.actual_number_of_exercises}</Text>
                   <Text style={styles.statLabel}>Exercises</Text>
                 </View>
                 <View style={styles.statItem}>
-                  <Text style={styles.statValue}>{workout.duration}min</Text>
+                  <Text style={styles.statValue}>12min</Text>
                   <Text style={styles.statLabel}>Duration</Text>
                 </View>
                 <View style={styles.statItem}>
-                  <Text style={styles.statValue}>{workout.totalVolume}</Text>
+                  <Text style={styles.statValue}>{workout.total_weight}</Text>
                   <Text style={styles.statLabel}>Volume (lbs)</Text>
                 </View>
               </View>
