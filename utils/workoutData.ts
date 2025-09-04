@@ -192,7 +192,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
     },
   };
 
-  return workouts[today] || null;
+  return workouts[5] || null;
 };
 
 export const getWorkoutRoutines = (): WorkoutRoutine[] => {

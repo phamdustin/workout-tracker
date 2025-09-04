@@ -4,7 +4,7 @@ export async function addSet(workoutId, set_number, reps, weight) {
     const { data, error } = await supabase
         .from('exercise_sets')
         .insert([{
-            workout_id: workoutId,
+            workout_exercise_id: workoutId,
             set_number: set_number,
             reps: reps,
             weight: weight
@@ -12,17 +12,32 @@ export async function addSet(workoutId, set_number, reps, weight) {
         .select()
 
     if (error) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(error)
         
     }
-    return data[0]
+    return data
 }
 
 // Pull all rows from a workout session
 export async function pullWorkout(userId) {
     const { data, error } = await supabase
         .from('sessions')
-        .select('*')
+        .select(`
+            name,
+            date,
+            expected_number_of_exercises,
+            actual_number_of_exercises,
+            total_weight,
+            duration,
+            workout_exercises (
+                exercise_name,
+                exercise_sets (
+                    set_number,
+                    reps,
+                    weight)
+            )
+            
+            `)
         .eq('user_id', userId)
 
     if (error) {

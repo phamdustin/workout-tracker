@@ -70,8 +70,22 @@ export interface UserStats {
   }[];
 }
 
+export interface ExerciseSets {
+  set_number: number;
+  reps: number;
+  weight: number;
+}
+export interface WorkoutExercises {
+  exercise_name: string;
+  exercise_sets: Array<ExerciseSets>;
+}
 export interface WorkoutHistorySupa {
   id: number;
-  exercise_name: string;
+  name: string;
   date: Date;
+  expected_number_of_exercises: number;
+  actual_number_of_exercises: number;
+  total_weight: number;
+  workout_exercises: Array<WorkoutExercises>;
+  duration: number;
 }

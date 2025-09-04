@@ -70,6 +70,14 @@ export default function HistoryScreen() {
     return <Text>Loading...</Text>
   }
   
+  const handlePress = () => {
+    console.log("workout history pressed")
+    return (
+      <View>
+        <p>text</p>
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -139,7 +147,7 @@ export default function HistoryScreen() {
           
           {/* {filteredHistory.map((workoutHistory) => ( */}
           {workoutHistory.map((workout) => (
-            <TouchableOpacity key={workout.id} style={styles.historyCard}>
+            <TouchableOpacity key={workout.id} style={styles.historyCard} onPress={handlePress}>
               <View style={styles.historyHeader}>
                 <View>
                   <Text style={styles.historyTitle}>{workout.name}</Text>
@@ -161,7 +169,7 @@ export default function HistoryScreen() {
                   <Text style={styles.statLabel}>Exercises</Text>
                 </View>
                 <View style={styles.statItem}>
-                  <Text style={styles.statValue}>12min</Text>
+                  <Text style={styles.statValue}>{workout.duration} min</Text>
                   <Text style={styles.statLabel}>Duration</Text>
                 </View>
                 <View style={styles.statItem}>
@@ -169,6 +177,25 @@ export default function HistoryScreen() {
                   <Text style={styles.statLabel}>Volume (lbs)</Text>
                 </View>
               </View>
+
+              {workout.workout_exercises && (
+                <View style={styles.workoutStats}>
+                  <View>     
+                    {workout.workout_exercises.map((exercise) => (    
+                      <View>
+                        <Text style={styles.statValue}>{exercise.exercise_name}</Text> 
+
+                        {exercise.exercise_sets.map((set) => (
+                          <View style={{flexDirection:'row'}}>
+                            <Text>Set {set.set_number}: </Text>
+                            <Text>{set.reps} reps @ {set.weight}</Text>
+                          </View>
+                        ))}
+                        </View>
+                      ))}  
+                  </View> 
+                </View>
+              )}
             </TouchableOpacity>
           ))}
         </View>
@@ -348,4 +375,9 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginTop: 2,
   },
+  workoutStats: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+  }
 });
