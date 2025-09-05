@@ -19,7 +19,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function WorkoutScreen() {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutSession | null>(null);
-  const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
+  const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set());
   const [user, setUsers] = useState([]);
 
   useEffect(() => {
@@ -37,13 +37,12 @@ export default function WorkoutScreen() {
         console.log(data)
       }
       }
-
     fetchData();
     
   }, []);
 
 
-  const handleExerciseComplete = (exerciseId: string) => {
+  const handleExerciseComplete = (exerciseId: number) => {
     setCompletedExercises(prev => new Set([...prev, exerciseId]));
     console.log(`Current Exercise list ${[...completedExercises]}`);
   };

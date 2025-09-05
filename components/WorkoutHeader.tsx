@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Play, Pause, RotateCcw } from 'lucide-react-native';
+
+import { newSession } from '@/utils/workoutService';
+import { UserContext } from '@/context/UserContext'
+import { useAuth } from '@/context/UserContext';
 
 interface WorkoutHeaderProps {
   title: string;
@@ -16,6 +20,10 @@ interface WorkoutHeaderProps {
 export default function WorkoutHeader({ title, subtitle, duration }: WorkoutHeaderProps) {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+
+  const [sessionCreated, setSessionCreated] = useState(false)
+  const { userInfo } = useContext(UserContext)
+  const { sessionId, setSessionId } = useAuth()
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -37,6 +45,19 @@ export default function WorkoutHeader({ title, subtitle, duration }: WorkoutHead
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
+    console.log(Date())
+    if (!sessionCreated) {
+      // create new session
+      
+      const session_Id = newSession(userInfo.user_id, userInfo.name)
+      setSessionCreated(!sessionCreated)
+      console.log("New session created")
+      setSessionId(session_Id)
+    } else {
+        console.log(sessionId)
+    }
+
+    
   };
 
   const resetTimer = () => {

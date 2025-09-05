@@ -6,7 +6,8 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(localStorage.getItem("site") || "")
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState(null) // id (index), name, user_id
+  const [sessionId, setSessionId] = useState(null)
 
   const loginAction = async (email, password) => {
     // possibly use const { data, error } 
@@ -72,7 +73,7 @@ export const UserProvider = ({ children }) => {
   }, [])
 
   return ( 
-    <UserContext.Provider value={{ user, setUser, token, setToken, userInfo, loginAction, logoutAction }}>
+    <UserContext.Provider value={{ user, setUser, token, setToken, userInfo, loginAction, logoutAction, sessionId, setSessionId}}>
       {children}
     </UserContext.Provider>
   )

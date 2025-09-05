@@ -54,6 +54,7 @@ export default function ExerciseCard({
     setSets(prev => prev.map((set, index) => 
       index === setIndex ? { ...set, [field]: value } : set
     ));
+    console.log(exercise)
   };
 
   // updates individual set to True/False
@@ -63,9 +64,9 @@ export default function ExerciseCard({
       { ...set, completed: !set.completed } : set
     ));
     // make a POST to the database to update the information
-    const newSet = sets[setIndex]
+    // const newSet = sets[setIndex]
     // using 1 as a tester for now
-    addSet(1, setIndex, newSet.actualReps, newSet.actualWeight)
+    // addSet(1, setIndex, newSet.actualReps, newSet.actualWeight)
      
   };
 
@@ -77,6 +78,10 @@ export default function ExerciseCard({
       onComplete();
     }
 
+    sets.map((set, index) => {
+      addSet(exercise.id, index+1, set.actualReps, set.actualWeight)
+    })
+    console.log("Added all sets from this exercise to database")
   };
 
   return (

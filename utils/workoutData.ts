@@ -21,7 +21,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
       date: new Date(),
       exercises: [
         {
-          id: 'bench-press',
+          id: 1,
           name: 'Bench Press',
           muscleGroup: 'Chest',
           sets: [
@@ -34,8 +34,8 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 180,
         },
         {
-          id: 'overhead-press',
-          name: 'Overhead Press',
+          id: 4,
+          name: 'Shoulder Press',
           muscleGroup: 'Shoulders',
           sets: [
             { targetWeight: 95, targetReps: 8 },
@@ -45,7 +45,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 120,
         },
         {
-          id: 'incline-dumbbell-press',
+          id: 2,
           name: 'Incline Dumbbell Press',
           muscleGroup: 'Chest',
           sets: [
@@ -56,7 +56,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 90,
         },
         {
-          id: 'lateral-raises',
+          id: 5,
           name: 'Lateral Raises',
           muscleGroup: 'Shoulders',
           sets: [
@@ -67,7 +67,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 60,
         },
         {
-          id: 'tricep-dips',
+          id: 6,
           name: 'Tricep Dips',
           muscleGroup: 'Triceps',
           sets: [
@@ -88,7 +88,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
       date: new Date(),
       exercises: [
         {
-          id: 'deadlift',
+          id: 11,
           name: 'Deadlift',
           muscleGroup: 'Back',
           sets: [
@@ -100,7 +100,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 180,
         },
         {
-          id: 'pull-ups',
+          id: 12,
           name: 'Pull-ups',
           muscleGroup: 'Back',
           sets: [
@@ -111,7 +111,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 120,
         },
         {
-          id: 'barbell-rows',
+          id: 13,
           name: 'Barbell Rows',
           muscleGroup: 'Back',
           sets: [
@@ -122,7 +122,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 90,
         },
         {
-          id: 'bicep-curls',
+          id: 14,
           name: 'Bicep Curls',
           muscleGroup: 'Biceps',
           sets: [
@@ -142,7 +142,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
       date: new Date(),
       exercises: [
         {
-          id: 'squats',
+          id: 4,
           name: 'Back Squats',
           muscleGroup: 'Quads',
           sets: [
@@ -155,7 +155,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 180,
         },
         {
-          id: 'romanian-deadlift',
+          id: 8,
           name: 'Romanian Deadlift',
           muscleGroup: 'Hamstrings',
           sets: [
@@ -166,7 +166,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 120,
         },
         {
-          id: 'bulgarian-split-squats',
+          id: 9,
           name: 'Bulgarian Split Squats',
           muscleGroup: 'Quads',
           sets: [
@@ -178,7 +178,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
           restTime: 90,
         },
         {
-          id: 'calf-raises',
+          id: 10,
           name: 'Calf Raises',
           muscleGroup: 'Calves',
           sets: [
