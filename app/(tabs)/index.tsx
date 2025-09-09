@@ -1,6 +1,6 @@
 // Workout tab
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -12,16 +12,21 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ExerciseCard from '@/components/ExerciseCard';
 import WorkoutHeader from '@/components/WorkoutHeader';
-import { getTodaysWorkout, completeWorkout } from '@/utils/workoutData';
+import { getTodaysWorkout } from '@/utils/workoutData';
 import { Exercise, WorkoutSession } from '@/types/workout';
 import { supabase } from '@/utils/supabase'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+import { completeWorkout } from '@/utils/workoutService';
+import { UserContext } from '@/context/UserContext';
+
 export default function WorkoutScreen() {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutSession | null>(null);
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set());
+  const [totalWeight, setTotalWeight] = useState(0)
   const [user, setUsers] = useState([]);
 
+  const { sessionId } = useContext(UserContext)
   useEffect(() => {
     const workout = getTodaysWorkout();
     setCurrentWorkout(workout);
@@ -42,20 +47,26 @@ export default function WorkoutScreen() {
   }, []);
 
 
-  const handleExerciseComplete = (exerciseId: number) => {
+  const handleExerciseComplete = (exerciseId: number, total_Weight: number) => {
     setCompletedExercises(prev => new Set([...prev, exerciseId]));
+    setTotalWeight(totalWeight+total_Weight)
     console.log(`Current Exercise list ${[...completedExercises]}`);
+    console.log(`total weight is currently ${totalWeight}`)
   };
 
   const handleCompleteWorkout = () => {
     // Need to update session in database with number of exercises, and total weight
-    // 
-    if (currentWorkout) {
+    // On this side it would gather data to complete, stop timer, and show some way that its complete
+
+    /* if (currentWorkout) {
       completeWorkout(currentWorkout.id);
       // Reset for next workout
       setCompletedExercises(new Set());
-    }
-    completeWorkout("testing workout");
+    } */
+    console.log(completedExercises)
+    const total_Weight = totalWeight
+    console.log(`total weight is currently ${total_Weight}`)
+    completeWorkout(sessionId, total_Weight, completedExercises.size);
     
   };
 
@@ -95,7 +106,7 @@ export default function WorkoutScreen() {
             exercise={exercise}
             exerciseNumber={index + 1}
             isCompleted={completedExercises.has(exercise.id)}
-            onComplete={() => handleExerciseComplete(exercise.id)}
+            onComplete={(totalWeight) => handleExerciseComplete(exercise.id, totalWeight)}
           />
         ))}
 

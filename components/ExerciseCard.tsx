@@ -14,7 +14,7 @@ interface ExerciseCardProps {
   exercise: Exercise;
   exerciseNumber: number;
   isCompleted: boolean;
-  onComplete: () => void;
+  onComplete: (totalWeight: number) => void;
 }
 
 /* 
@@ -80,7 +80,11 @@ export default function ExerciseCard({
   // Need to create new workout_exercise entry here using addWorkoutExercise from workoutService
   const handleExerciseComplete = async () => {
     if (allSetsCompleted) {
-      onComplete();
+      var totalWeight = 0
+      sets.map((set, index) => {
+        totalWeight += set.actualWeight
+      })
+      onComplete(totalWeight);
     }
     console.log("Session Id: ", sessionId)
     console.log("User ID: ", userInfo.user_id)
