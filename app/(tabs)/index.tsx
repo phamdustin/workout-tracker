@@ -48,6 +48,8 @@ export default function WorkoutScreen() {
   };
 
   const handleCompleteWorkout = () => {
+    // Need to update session in database with number of exercises, and total weight
+    // 
     if (currentWorkout) {
       completeWorkout(currentWorkout.id);
       // Reset for next workout

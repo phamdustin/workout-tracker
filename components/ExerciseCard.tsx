@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { Plus, Minus, Check } from 'lucide-react-native';
 import { Exercise } from '@/types/workout';
-import { addSet } from '@/utils/workoutService'
-
+import { addSet, addWorkoutExercise, pullExerciseId } from '@/utils/workoutService'
+import { UserContext } from '@/context/UserContext';
 interface ExerciseCardProps {
   exercise: Exercise;
   exerciseNumber: number;
@@ -49,6 +49,9 @@ export default function ExerciseCard({
     }))
   );
 
+  const { userInfo } = useContext(UserContext)
+  const { sessionId } = useContext(UserContext)
+
   // updates individual sets' weight or reps
   const updateSet = (setIndex: number, field: 'actualWeight' | 'actualReps', value: number) => {
     setSets(prev => prev.map((set, index) => 
@@ -73,15 +76,22 @@ export default function ExerciseCard({
   const allSetsCompleted = sets.every(set => set.completed);
 
 
-  const handleExerciseComplete = () => {
+  // Maybe instead of sending information after each exercise, send after workout is complete?
+  // Need to create new workout_exercise entry here using addWorkoutExercise from workoutService
+  const handleExerciseComplete = async () => {
     if (allSetsCompleted) {
       onComplete();
     }
+    console.log("Session Id: ", sessionId)
+    console.log("User ID: ", userInfo.user_id)
+    const exercise_id = parseInt( await pullExerciseId(exercise.name))
+    const workout_exercise_id = await addWorkoutExercise(userInfo.user_id, '2025-09-09', exercise.name, exercise_id, sessionId)
+    //console.log(workout_exercise_id)
 
     sets.map((set, index) => {
-      addSet(exercise.id, index+1, set.actualReps, set.actualWeight)
+      addSet(workout_exercise_id, index+1, set.actualReps, set.actualWeight)
     })
-    console.log("Added all sets from this exercise to database")
+    console.log("Added all sets from this exercise to database") 
   };
 
   return (

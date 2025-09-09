@@ -19,13 +19,13 @@ export async function addSet(workoutId, set_number, reps, weight) {
 
 // Takes in 4 arguments: userId, user's name, session's date, expected number of exercises
 // Should just return the session id number associated but will need to test what the data returns
-export async function newSession(userId,userName, sessionDate = null) {
+export async function newSession(userId,sessionName, sessionDate = null) {
     // possibly add routine ID into here too
     const { data, error } = await supabase
         .from('sessions')
         .insert([{
             user_id : userId,
-            name : userName,
+            name : sessionName,
             date : sessionDate,
             routine_id : '0615e257-1dee-41af-b0e3-8b00df1b1779'
         }])
@@ -47,10 +47,13 @@ export async function addWorkoutExercise(userId, exerciseDate, exerciseName, exe
             date : exerciseDate,
             session_id : sessionId
         }])
+        .select("id")
 
     if (error) {
         return console.error(error)
-    } return data
+    } 
+    console.log(data[0].id)
+    return data[0].id
 }
 
 // Pull all rows from a workout session
@@ -81,5 +84,18 @@ export async function pullWorkout(userId) {
     }
     console.log('pullworkout function data: ', data)
     return data
+}
+
+export async function pullExerciseId(exercise_name) {
+    const { data, error } = await supabase
+        .from('exercises')
+        .select('id')
+        .eq('name', exercise_name)
+    if (error) {
+        console.error('Error fetching exercise ID:', error)
+        return []
+    }
+    console.log('pullExerciseId function data: ', data[0].id)
+    return data[0].id
 }
 

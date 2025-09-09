@@ -43,20 +43,21 @@ export default function WorkoutHeader({ title, subtitle, duration }: WorkoutHead
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const toggleTimer = () => {
+  // Using this temporarily to create a new session when clicked for the first time
+  const toggleTimer =  async () => {
     setIsRunning(!isRunning);
     console.log(Date())
     if (!sessionCreated) {
       // create new session
       
-      const session_Id = newSession(userInfo.user_id, userInfo.name)
+      const session_Id = await newSession(userInfo.user_id, title)
       setSessionCreated(!sessionCreated)
       console.log("New session created")
       setSessionId(session_Id)
-    } else {
+    } /* else {
         console.log(sessionId)
     }
-
+ */
     
   };
 
