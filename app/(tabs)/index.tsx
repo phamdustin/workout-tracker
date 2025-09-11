@@ -1,6 +1,6 @@
 // Workout tab
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ExerciseCard from '@/components/ExerciseCard';
-import WorkoutHeader from '@/components/WorkoutHeader';
+import WorkoutHeader, {ChildHandle} from '@/components/WorkoutHeader';
 import { getTodaysWorkout } from '@/utils/workoutData';
 import { Exercise, WorkoutSession } from '@/types/workout';
 import { supabase } from '@/utils/supabase'
@@ -25,8 +25,12 @@ export default function WorkoutScreen() {
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set());
   const [totalWeight, setTotalWeight] = useState(0)
   const [user, setUsers] = useState([]);
+  
+  const [completeWorkoutTrigger, setCompleteWorkoutTrigger] = useState(false)
 
   const { sessionId } = useContext(UserContext)
+  const headerRef = useRef<ChildHandle>(null)
+
   useEffect(() => {
     const workout = getTodaysWorkout();
     setCurrentWorkout(workout);
@@ -63,10 +67,16 @@ export default function WorkoutScreen() {
       // Reset for next workout
       setCompletedExercises(new Set());
     } */
-    console.log(completedExercises)
+    const num_of_exercises = completedExercises.size
     const total_Weight = totalWeight
-    console.log(`total weight is currently ${total_Weight}`)
-    completeWorkout(sessionId, total_Weight, completedExercises.size);
+    setCompleteWorkoutTrigger(true)
+    var timerValue = 0
+    if (headerRef.current) {
+      timerValue = headerRef.current.getTimerValue()
+
+    }
+    console.log("Parent received timer:", timerValue)
+    completeWorkout(sessionId, total_Weight, num_of_exercises, timerValue);
     
   };
 
@@ -89,10 +99,12 @@ export default function WorkoutScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       
-      <WorkoutHeader 
+      <WorkoutHeader
+        ref={headerRef} 
         title={currentWorkout.name}
         subtitle={currentWorkout.description}
         duration={currentWorkout.estimatedDuration}
+        workoutCompleteTrigger={completeWorkoutTrigger}
       />
 
       <ScrollView 

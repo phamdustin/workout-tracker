@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useImperativeHandle, forwardRef } from 'react';
 import {
   View,
   Text,
@@ -15,92 +15,111 @@ interface WorkoutHeaderProps {
   title: string;
   subtitle: string;
   duration: number;
+  workoutCompleteTrigger: boolean;
 }
 
-export default function WorkoutHeader({ title, subtitle, duration }: WorkoutHeaderProps) {
-  const [timer, setTimer] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+export interface ChildHandle {
+  getTimerValue: () => number
+}
 
-  const [sessionCreated, setSessionCreated] = useState(false)
-  const { userInfo } = useContext(UserContext)
-  const { sessionId, setSessionId } = useAuth()
+const WorkoutHeader = forwardRef<ChildHandle, WorkoutHeaderProps>(
+  ({ title, subtitle, duration, workoutCompleteTrigger }, ref) =>{
+    const [timer, setTimer] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTimer(timer => timer + 1);
-      }, 1000);
-    }
-    
-    return () => clearInterval(interval);
-  }, [isRunning]);
+    const [sessionCreated, setSessionCreated] = useState(false)
+    const { userInfo } = useContext(UserContext)
+    const { sessionId, setSessionId } = useAuth()
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Using this temporarily to create a new session when clicked for the first time
-  const toggleTimer =  async () => {
-    setIsRunning(!isRunning);
-    console.log(Date())
-    if (!sessionCreated) {
-      // create new session
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
       
-      const session_Id = await newSession(userInfo.user_id, title)
-      setSessionCreated(!sessionCreated)
-      console.log("New session created")
-      setSessionId(session_Id)
-    } /* else {
-        console.log(sessionId)
-    }
- */
-    
-  };
+      if (isRunning) {
+        interval = setInterval(() => {
+          setTimer(timer => timer + 1);
+        }, 1000);
+      }
+      
+      return () => clearInterval(interval);
+    }, [isRunning]);
 
-  const resetTimer = () => {
-    setTimer(0);
-    setIsRunning(false);
-  };
+    // if parent component triggers that the workout has completed then it will run this
+    useEffect(() => {
+      if (workoutCompleteTrigger) {
+        setIsRunning(true)
+        console.log(Date())
+      }
+    }, [workoutCompleteTrigger])
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.workoutInfo}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
-        <Text style={styles.estimatedDuration}>Est. {duration} minutes</Text>
-      </View>
+    useImperativeHandle(ref, () => ({
+      getTimerValue: () => timer,
+    }))
 
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>{formatTime(timer)}</Text>
+
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    // Using this temporarily to create a new session when clicked for the first time
+    const toggleTimer =  async () => {
+      setIsRunning(!isRunning);
+      console.log(Date())
+      if (!sessionCreated) {
+        // create new session
         
-        <View style={styles.timerControls}>
-          <TouchableOpacity
-            style={[styles.timerButton, isRunning ? styles.pauseButton : styles.playButton]}
-            onPress={toggleTimer}
-          >
-            {isRunning ? (
-              <Pause size={16} color="#FFFFFF" />
-            ) : (
-              <Play size={16} color="#FFFFFF" />
-            )}
-          </TouchableOpacity>
+        const session_Id = await newSession(userInfo.user_id, title)
+        setSessionCreated(!sessionCreated)
+        console.log("New session created")
+        setSessionId(session_Id)
+      } /* else {
+          console.log(sessionId)
+      }
+  */
+      
+    };
+
+    const resetTimer = () => {
+      setTimer(0);
+      setIsRunning(false);
+    };
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.workoutInfo}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.estimatedDuration}>Est. {duration} minutes</Text>
+        </View>
+
+        <View style={styles.timerContainer}>
+          <Text style={styles.timerText}>{formatTime(timer)}</Text>
           
-          <TouchableOpacity
-            style={styles.resetButton}
-            onPress={resetTimer}
-          >
-            <RotateCcw size={16} color="#64748B" />
-          </TouchableOpacity>
+          <View style={styles.timerControls}>
+            <TouchableOpacity
+              style={[styles.timerButton, isRunning ? styles.pauseButton : styles.playButton]}
+              onPress={toggleTimer}
+            >
+              {isRunning ? (
+                <Pause size={16} color="#FFFFFF" />
+              ) : (
+                <Play size={16} color="#FFFFFF" />
+              )}
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={resetTimer}
+            >
+              <RotateCcw size={16} color="#64748B" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
-}
-
+    );
+  }
+)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
@@ -171,3 +190,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default WorkoutHeader

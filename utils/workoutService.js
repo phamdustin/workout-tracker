@@ -99,13 +99,14 @@ export async function pullExerciseId(exercise_name) {
     return data[0].id
 }
 
-export async function completeWorkout(sessionId, totalWeight, num_of_exercises){
+export async function completeWorkout(sessionId, totalWeight, num_of_exercises, duration){
     // In a real app, this would save to database, actual_number_of_exercises, total_weight, duration
-    console.log(totalWeight)
-    console.log(num_of_exercises)
     const { data, error } = await supabase
         .from('sessions')
-        .update({actual_number_of_exercises: num_of_exercises, total_weight :totalWeight})
+        .update({
+            actual_number_of_exercises: num_of_exercises, 
+            total_weight :totalWeight, 
+            duration: duration})
         .eq('id', sessionId)
         
     
