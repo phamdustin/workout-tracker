@@ -29,14 +29,13 @@ export interface WorkoutRoutine {
   id: string;
   name: string;
   description: string;
-  duration: number; // in weeks
+  num_of_weeks: number; // in weeks
   schedule: {
     isActive: boolean;
-    workoutType?: string;
   }[];
-  totalExercises: number;
-  workoutsPerWeek: number;
-  avgDuration: number;
+  total_exercises: number;
+  workouts_per_week: number;
+  avg_duration: number;
 }
 
 export interface WorkoutHistory {

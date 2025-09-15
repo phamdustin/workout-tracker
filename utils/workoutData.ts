@@ -195,7 +195,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
   return workouts[5] || null;
 };
 
-export const getWorkoutRoutines = (): WorkoutRoutine[] => {
+/* export const getWorkoutRoutines = (): WorkoutRoutine[] => {
   return [
     {
       id: 'push-pull-legs',
@@ -235,7 +235,7 @@ export const getWorkoutRoutines = (): WorkoutRoutine[] => {
     },
   ];
 };
-
+ */
 export const getWorkoutHistory = (): WorkoutHistory[] => {
   const baseDate = new Date();
   return [

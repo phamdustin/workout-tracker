@@ -8,20 +8,33 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus, Calendar } from 'lucide-react-native';
-import { getWorkoutRoutines } from '@/utils/workoutData';
+import { getRoutines } from '@/utils/workoutService';
 import { WorkoutRoutine } from '@/types/workout';
 
 export default function RoutinesScreen() {
   const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
 
   useEffect(() => {
-    setRoutines(getWorkoutRoutines());
+    async function grabRoutines() {
+      const data = await getRoutines()
+      console.log(data)
+      setRoutines(data)
+    }
+    grabRoutines()
+    
   }, []);
 
   const getDayLabel = (dayIndex: number) => {
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return days[dayIndex];
   };
+
+  const handleRoutinePress = () => {
+    // Intention: When ran, it will pull the exercises associated to routine
+    // in a different screen than the routine screen.
+
+    console.log("handling Routine Press")
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,10 +50,11 @@ export default function RoutinesScreen() {
         </TouchableOpacity>
 
         {routines.map((routine) => (
+          <TouchableOpacity key={routine.id} onPress={handleRoutinePress}>
           <View key={routine.id} style={styles.routineCard}>
             <View style={styles.routineHeader}>
               <Text style={styles.routineName}>{routine.name}</Text>
-              <Text style={styles.routineDuration}>{routine.duration} weeks</Text>
+              <Text style={styles.routineDuration}>{routine.num_of_weeks} weeks</Text>
             </View>
             
             <Text style={styles.routineDescription}>{routine.description}</Text>
@@ -68,9 +82,7 @@ export default function RoutinesScreen() {
                     >
                       {getDayLabel(index)}
                     </Text>
-                    {day.isActive && (
-                      <Text style={styles.workoutTypeText}>{day.workoutType}</Text>
-                    )}
+          
                   </View>
                 ))}
               </View>
@@ -78,19 +90,20 @@ export default function RoutinesScreen() {
 
             <View style={styles.routineStats}>
               <View style={styles.statItem}>
-                <Text style={styles.statValue}>{routine.totalExercises}</Text>
+                <Text style={styles.statValue}>{routine.total_exercises}</Text>
                 <Text style={styles.statLabel}>Exercises</Text>
               </View>
               <View style={styles.statItem}>
-                <Text style={styles.statValue}>{routine.workoutsPerWeek}</Text>
+                <Text style={styles.statValue}>{routine.workouts_per_week}</Text>
                 <Text style={styles.statLabel}>Days/Week</Text>
               </View>
               <View style={styles.statItem}>
-                <Text style={styles.statValue}>{routine.avgDuration}min</Text>
+                <Text style={styles.statValue}>{routine.avg_duration}min</Text>
                 <Text style={styles.statLabel}>Avg Duration</Text>
               </View>
             </View>
           </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>

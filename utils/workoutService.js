@@ -117,3 +117,15 @@ export async function completeWorkout(sessionId, totalWeight, num_of_exercises, 
     console.log(`Workout completed!`);
     return data
   };
+
+export async function getRoutines() {
+    const { data, error } = await supabase
+        .from('routines')
+        .select('*')
+    
+    if (error) {
+        console.error('Error fetching routines from database:', error)
+        return []
+    }
+    return data
+}

@@ -182,7 +182,7 @@ export default function HistoryScreen() {
                 <View style={styles.workoutStats}>
                   <View>     
                     {workout.workout_exercises.map((exercise) => (    
-                      <View>
+                      <View key={exercise.exercise_name}>
                         <Text style={styles.statValue}>{exercise.exercise_name}</Text> 
 
                         {exercise.exercise_sets.map((set) => (
