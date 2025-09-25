@@ -42,6 +42,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="chat"
+        options={{
+          title: 'Chatbot',
+          tabBarIcon: ({ size, color }) => (
+            <History size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="routines"
         options={{
           title: 'Routines',
