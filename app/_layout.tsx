@@ -5,21 +5,44 @@ import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { UserProvider } from '@/context/UserContext'
 import { useAuth } from '@/context/UserContext';
-import  Login  from '@/components/login'
-
+import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 function AuthGate() {
-  const { user } = useAuth()
+/*   const { user, loading } = useAuth()
 
-  if (!user) {
-    return <Login />
-  } 
+  if (loading) {
+    return null
+  }  
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)"/>
+     {!user ? (
+        <Stack.Screen name="login" />
+      ): (
+      <Stack.Screen name="(tabs)"/> 
+      )} 
     </Stack>
-  )
+  ) */
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
+        router.replace('/login');  // redirect to login if not logged in
+      } else {
+        router.replace('/');       // redirect to tabs root if logged in
+      }
+    }
+  }, [user, loading]);
+
+  if (loading) return null; // or splash screen
+
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
+
+
+
 export default function RootLayout() {
   useFrameworkReady();
 

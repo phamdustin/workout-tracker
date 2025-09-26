@@ -20,6 +20,7 @@ const USER = {
 export default function ChatBot() {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [inputText, setInputText] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
 
   const openai = new OpenAI({
       apiKey: process.env.EXPO_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true
@@ -36,27 +37,47 @@ export default function ChatBot() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello! I am a modern chatbot. How can I assist you today?',
+        text: 'Hello! I am your virtual workout assistant. How can I assist you today? \nTry asking questions such as: \n1. What are good chest exercises? \n2. How do I perform a bench press? \n3. How much protein should I consume for muscle growth?',
         createdAt: new Date(),
         user: BOT_USER,
       },
     ]);
   }, [])
 
-  const onSend = useCallback((newMessages: IMessage[] = []) => {
+  const onSend = async (newMessages: IMessage[] = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
     
+    setInputText("");
     // Simulate a bot response
-    const botResponseText = `I received your message: "${newMessages[0].text}". Thank you!`;
-    const botResponse: BotMessage = {
-      _id: Math.round(Math.random() * 1000000),
-      text: botResponseText,
-      createdAt: new Date(),
-      user: BOT_USER,
-    };
+    setIsTyping(true)
+    try {
+      const botResponseText = await openai.responses.create({
+        model: "gpt-5-nano",
+        input: newMessages[0].text,
+        store: true
+      })
+
+      const data = await botResponseText
+      const botResponse: BotMessage = {
+        _id: Math.round(Math.random() * 1000000),
+        text: botResponseText.output_text,
+        createdAt: new Date(),
+        user: BOT_USER,
+      };
+
+      setMessages(previousMessages => GiftedChat.append(previousMessages, [botResponse]));
+    }
+    catch (err){
+      console.error(err)
+    } finally {
+      setIsTyping(false)
+    }
+
+
+
     
-    setMessages(previousMessages => GiftedChat.append(previousMessages, [botResponse]));
-  }, []);
+
+  };
 
   // Customize the message bubbles
   const renderBubble = (props: BubbleProps<IMessage>) => {
@@ -101,6 +122,9 @@ export default function ChatBot() {
         renderInputToolbar={(props) => <InputToolbar {...props} containerStyle={styles.inputToolbar} />}
         renderSend={renderSend}
         placeholder="Type a message..."
+        isTyping={isTyping}
+        text={inputText}
+        onInputTextChanged={setInputText}
 
       />
     </View>

@@ -20,7 +20,7 @@ import { UserStats } from '@/types/workout';
 
 import { UserContext } from '@/context/UserContext';
 import { supabase } from '@/utils/supabase';
-import OpenAI from "openai";
+
 
 export default function ProfileScreen() {
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -28,20 +28,6 @@ export default function ProfileScreen() {
   const { userInfo } = useContext(UserContext) 
   
 
-  
-/*   const openai = new OpenAI({
-    apiKey: process.env.EXPO_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true
-  });
-  
-  const response = openai.responses.create({
-    model: "gpt-5-nano",
-    input: "write a haiku about ai",
-    store: true,
-  });
-  
-  response.then((result) => console.log(result.output_text));
- */
-  
   useEffect(() => {
     setUserStats(getUserStats());
     console.log(userInfo)

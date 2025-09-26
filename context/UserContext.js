@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("site") || "")
   const [userInfo, setUserInfo] = useState(null) // id (index), name, user_id
   const [sessionId, setSessionId] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const loginAction = async (email, password) => {
     // possibly use const { data, error } 
@@ -65,7 +66,8 @@ export const UserProvider = ({ children }) => {
         console.error("error was: ", error)
       }
 
-    } 
+    }
+    setLoading(false) 
   }
 
   useEffect(() => {
@@ -73,7 +75,7 @@ export const UserProvider = ({ children }) => {
   }, [])
 
   return ( 
-    <UserContext.Provider value={{ user, setUser, token, setToken, userInfo, loginAction, logoutAction, sessionId, setSessionId}}>
+    <UserContext.Provider value={{ user, setUser, token, setToken, userInfo, loginAction, logoutAction, sessionId, setSessionId, loading}}>
       {children}
     </UserContext.Provider>
   )
