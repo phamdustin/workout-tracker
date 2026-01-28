@@ -1,8 +1,3 @@
-/* tester accounts in .env
-  testing123@gmail.com 1234
-  tyrion@gmail.com monkey1
- */
-
   import { View, StyleSheet} from 'react-native'
   import { useState } from 'react'
   import { SafeAreaView } from 'react-native-safe-area-context'

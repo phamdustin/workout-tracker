@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+/* import OpenAI from "openai";
 import React, { useEffect, useState, useCallback } from "react";
 import { View, ScrollView, Text, TextInput, Button, StyleSheet} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -34,7 +34,7 @@ export default function ChatBot() {
     });
     
     response.then((result) => console.log(result.output_text)); */
-    setMessages([
+/*     setMessages([
       {
         _id: 1,
         text: 'Hello! I am your virtual workout assistant. How can I assist you today? \nTry asking questions such as: \n1. What are good chest exercises? \n2. How do I perform a bench press? \n3. How much protein should I consume for muscle growth?',
@@ -156,5 +156,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  // Add other custom styles as needed
-});
+  // Add other custom styles as needed 
+}); */

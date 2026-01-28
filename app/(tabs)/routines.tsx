@@ -5,11 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Pressable
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus, Calendar } from 'lucide-react-native';
 import { getRoutines } from '@/utils/workoutService';
 import { WorkoutRoutine } from '@/types/workout';
+import { router } from 'expo-router'
 
 export default function RoutinesScreen() {
   const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
@@ -29,14 +31,21 @@ export default function RoutinesScreen() {
     return days[dayIndex];
   };
 
-  const handleRoutinePress = () => {
+  const handleRoutinePress = (routineId: string) => {
     // Intention: When ran, it will pull the exercises associated to routine
     // in a different screen than the routine screen.
 
     console.log("handling Routine Press")
+    router.push({
+      pathname: '/viewRoutineSchedule',
+      params: {
+        routineId: routineId
+      },
+    })
   }
 
   return (
+
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Workout Routines</Text>
@@ -50,7 +59,7 @@ export default function RoutinesScreen() {
         </TouchableOpacity>
 
         {routines.map((routine) => (
-          <TouchableOpacity key={routine.id} onPress={handleRoutinePress}>
+          <TouchableOpacity key={routine.id} onPress={() => handleRoutinePress(routine.id)}>
           <View key={routine.id} style={styles.routineCard}>
             <View style={styles.routineHeader}>
               <Text style={styles.routineName}>{routine.name}</Text>

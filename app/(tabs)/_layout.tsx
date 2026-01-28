@@ -32,7 +32,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+{/*       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
@@ -40,8 +40,8 @@ export default function TabLayout() {
             <History size={size} color={color} />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+{/*       <Tabs.Screen
         name="chat"
         options={{
           title: 'Chatbot',
@@ -49,7 +49,7 @@ export default function TabLayout() {
             <History size={size} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="routines"
         options={{

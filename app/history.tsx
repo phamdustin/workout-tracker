@@ -1,3 +1,5 @@
+// MOVE BACK INTO (tabs) TO SHOW ON UI WHEN READY
+
 import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
@@ -5,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, TrendingUp, Filter } from 'lucide-react-native';
@@ -14,6 +17,8 @@ import { WorkoutHistory, PersonalRecord, WorkoutHistorySupa} from '@/types/worko
 import { pullWorkout } from '@/utils/workoutService'
 
 import { UserContext } from '@/context/UserContext';
+
+import { router } from 'expo-router';
 export default function HistoryScreen() {
   const [history, setHistory] = useState<WorkoutHistory[]>([]);
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistorySupa[]>([]);
@@ -80,6 +85,12 @@ export default function HistoryScreen() {
   }
   return (
     <SafeAreaView style={styles.container}>
+      {/* REMOVE THIS FIRST VIEW, JUST TESTING BACK*/} 
+      <View>
+        <Pressable onPress= {()=> router.back()}>
+          <Text>← Back </Text>
+        </Pressable>
+      </View>
       <View style={styles.header}>
         <Text style={styles.title}>Workout History</Text>
         <Text style={styles.subtitle}>Track your progress and achievements</Text>
