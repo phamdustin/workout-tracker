@@ -9,7 +9,8 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  SectionList
+  SectionList,
+  Button
 } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -89,13 +90,16 @@ export default function RoutineSchedule() {
 
   }, [loading, routineExercisesInformation])
 
-
+  const handleAddWorkout = () => {
+    console.log("handleAddWorkout pressed")
+    router.push('/addNewExercise')
+  }
   return (
     <SafeAreaView>
 
       <View>
         <Pressable onPress={()=> router.back()}>
-          <Text>← Back </Text>
+          <Text>← Back</Text>
         </Pressable>
       </View>
 
@@ -106,7 +110,7 @@ export default function RoutineSchedule() {
         <View style={styles.routineCard}>
           <View style={styles.routineHeader}>
             <Text style={styles.routineName}>{routineExercisesInformation[0].routine_id.name}</Text>
-            <Text style={styles.routineDuration}>{routineExercisesInformation[0].routine_id.workouts_per_week}</Text>
+            <Text style={styles.routineDuration}>{routineExercisesInformation[0].routine_id.workouts_per_week} Days/Wk</Text>
           </View>
 
           <View>
@@ -133,6 +137,16 @@ export default function RoutineSchedule() {
                 />
               </View>
           )}
+          </View>
+          {/* View for adding new exercises to Routine would go here */}
+          <View>
+            <Button
+              onPress={handleAddWorkout}
+              title="Add workout"
+              color="#841584"
+              accessibilityLabel="Button to add a workout to current routine">
+
+            </Button>
           </View>
         
 
