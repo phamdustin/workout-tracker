@@ -74,8 +74,10 @@ export default function NewWorkout() {
         showsVerticalScrollIndicator={true}
         contentContainerStyle = {styles.scrollContent}
         >
-          {listOfExercises.map((exercise) => (
-            <Text>{exercise.name}</Text>
+          {listOfExercises.map((exercise,index) => (
+            <Pressable key={index} onPress= {() => console.log("pressed")}>
+              <Text>{exercise.name}</Text>
+            </Pressable>
           ))}
 
       </ScrollView>
@@ -85,40 +87,22 @@ export default function NewWorkout() {
           const isSelected = selectedDays.includes(day)
 
           return (
-          <Text>{day} 
-            <Pressable 
-              key={day}
-                style={() => 
-                [styles.button,
-                { 
-                  backgroundColor: isSelected ? 'green' : 'gray',
-                },
-                ]}
-              onPress={() => toggleDay(day)}
-            >
-              <Text> </Text>
-            </Pressable>
-          </Text>
+          <View style={styles.dayChip}>
+              <Pressable 
+                key={day}
+                  style={() => 
+                  [styles.button,
+                   isSelected ? styles.activeDayChip : styles.inactiveDayChip,
+
+                  ]}
+                onPress={() => toggleDay(day)}
+              >
+                <Text>{day}</Text>
+              </Pressable>
+          </View>
           )
         }
-
         ) }
-{/*         <Pressable style={() => 
-          [styles.button,
-          { 
-            backgroundColor: monPressed ? 'green' : 'gray',
-          },
-          ]}
-          onPress={handleButtonPressed}
-        >
-          <Text>Mon</Text>
-        </Pressable>
-        <Button title="Tue" />
-        <Button title="Wed" />
-        <Button title="Thu" />
-        <Button title="Fru" />
-        <Button title="Sat" />
-        <Button title="Sun" /> */}
 
 
       </View>
@@ -146,21 +130,34 @@ const styles = StyleSheet.create({
     borderRadius: '10px',
   },
   scrollView: {
-    flex: 1,
+    backgroundColor: 'white',
+    maxHeight: 250
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 100,
-    flexGrow: 1
+    paddingBottom: 20,
+    flexGrow: 1,
+    height: 16
   },
   weekdayButtonsContainer: {
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    gap: 8
+  },
+  dayChip: {
+    borderRadius: 3,
+    padding: 8,
+    minWidth: 20,
+    alignItems: 'center',
+  },
+  activeDayChip: {
+    backgroundColor: '#2563EB',
+  },
+  inactiveDayChip: {
+    backgroundColor: '#F1F5F9',
   },
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingVertical: 8,
+    width: 35,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
