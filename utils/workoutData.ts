@@ -46,7 +46,7 @@ export const getTodaysWorkout = (): WorkoutSession | null => {
         },
         {
           id: 2,
-          name: 'Incline Dumbbell Press',
+          name: 'Incline Chest Press (Dumbbells)',
           muscleGroup: 'Chest',
           sets: [
             { targetWeight: 60, targetReps: 10 },

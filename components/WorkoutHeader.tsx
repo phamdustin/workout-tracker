@@ -46,7 +46,7 @@ const WorkoutHeader = forwardRef<ChildHandle, WorkoutHeaderProps>(
     // if parent component triggers that the workout has completed then it will run this
     useEffect(() => {
       if (workoutCompleteTrigger) {
-        setIsRunning(true)
+        setIsRunning(!isRunning)
         console.log(Date())
       }
     }, [workoutCompleteTrigger])
