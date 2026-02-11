@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export async function addSet(workoutId, set_number, reps, weight) {
+export async function addSet(workoutId: number, set_number: number, reps: number, weight: number) {
     const { data, error } = await supabase
         .from('exercise_sets')
         .insert([{
@@ -19,7 +19,7 @@ export async function addSet(workoutId, set_number, reps, weight) {
 
 // Takes in 4 arguments: userId, user's name, session's date, expected number of exercises
 // Should just return the session id number associated but will need to test what the data returns
-export async function newSession(userId,sessionName, sessionDate = null) {
+export async function newSession(userId: string,sessionName: string, sessionDate = null) {
     // possibly add routine ID into here too
     const { data, error } = await supabase
         .from('sessions')
@@ -32,12 +32,13 @@ export async function newSession(userId,sessionName, sessionDate = null) {
         .select()
 
     if (error) {
-        console.error(error)
-    } return data[0].id // returns sessionId
+        return console.error(error)
+    } 
+    return data[0].id // returns sessionId
 }
 
 // Takes in 5 arguments: userId, exercise's date, exercise's name, exercise's ID in database, session ID in database
-export async function addWorkoutExercise(userId, exerciseDate, exerciseName, exerciseId, sessionId) {
+export async function addWorkoutExercise(userId: string, exerciseDate: Date, exerciseName: string, exerciseId: number, sessionId: number) {
     const { data, error } = await supabase
         .from('workout_exercises')
         .insert([{
@@ -57,7 +58,7 @@ export async function addWorkoutExercise(userId, exerciseDate, exerciseName, exe
 }
 
 // Pull all rows from a workout session
-export async function pullWorkout(userId) {
+export async function pullWorkout(userId: string) {
     const { data, error } = await supabase
         .from('sessions')
         .select(`
@@ -86,7 +87,7 @@ export async function pullWorkout(userId) {
     return data
 }
 
-export async function pullExerciseId(exercise_name) {
+export async function pullExerciseId(exercise_name: string) {
     const { data, error } = await supabase
         .from('exercises')
         .select('id')
@@ -99,7 +100,7 @@ export async function pullExerciseId(exercise_name) {
     return data[0].id
 }
 
-export async function completeWorkout(sessionId, totalWeight, num_of_exercises, duration){
+export async function completeWorkout(sessionId: string, totalWeight: number, num_of_exercises: number, duration: number){
     // In a real app, this would save to database, actual_number_of_exercises, total_weight, duration
     const { data, error } = await supabase
         .from('sessions')

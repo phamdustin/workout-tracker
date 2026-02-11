@@ -21,10 +21,15 @@ import { completeWorkout } from '@/utils/workoutService';
 import { UserContext } from '@/context/UserContext';
 
 export default function WorkoutScreen() {
+  interface User {
+    id: number,
+    name: string,
+    user_id: string
+  }
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutSession | null>(null);
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set());
   const [totalWeight, setTotalWeight] = useState(0)
-  const [user, setUsers] = useState([]);
+  const [user, setUsers] = useState<User[]>([]);
   
   const [completeWorkoutTrigger, setCompleteWorkoutTrigger] = useState(false)
 
@@ -43,7 +48,7 @@ export default function WorkoutScreen() {
         console.error(error)
       } else if (data) {
         setUsers(data)
-        console.log(data)
+        //console.log("Index data fetched", data)
       }
       }
     fetchData();

@@ -17,9 +17,15 @@ import { Pressable,
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 export default function NewWorkout() {
+  interface Exercise {
+    id: number,
+    name: string,
+    category: string[]
+
+  }
   const [exerciseName, setExerciseName ] = useState("")
-  const [listOfExercises, setListOfExercises] = useState([])
-  const [selectedDays, setSelectedDays] = useState([])
+  const [listOfExercises, setListOfExercises] = useState<Exercise[]>([])
+  const [selectedDays, setSelectedDays] = useState<string[]>([])
 
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   const exerciseTextBoxChange = (event: any) => {
@@ -40,13 +46,13 @@ export default function NewWorkout() {
         console.error("Error pulling from supabase: list of exercises", error)
 
       } else {
-        setListOfExercises(exercises ?? null)
+        setListOfExercises(exercises || [])
       }
     }
     fetchExerciseList()
   }, [exerciseName])
   
-  const toggleDay = (day) => {
+  const toggleDay = (day: string) => {
     setSelectedDays((prev) =>
       prev.includes(day)
         ? prev.filter((d) => d !== day) // remove

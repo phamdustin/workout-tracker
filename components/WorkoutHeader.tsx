@@ -32,7 +32,7 @@ const WorkoutHeader = forwardRef<ChildHandle, WorkoutHeaderProps>(
     const { sessionId, setSessionId } = useAuth()
 
     useEffect(() => {
-      let interval: NodeJS.Timeout;
+      let interval: ReturnType<typeof setInterval>
       
       if (isRunning) {
         interval = setInterval(() => {
